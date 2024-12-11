@@ -1,6 +1,8 @@
 const chatList = [];
 
 let user = "";
+var md = window.markdownit();
+
 
 document.getElementById("selectUser").addEventListener("change", function () {
   user = this.value;
@@ -18,7 +20,7 @@ function sendMassage() {
 
     console.log("Hello");
   }
-  // --------------------------------------------------------------
+
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -38,18 +40,18 @@ function sendMassage() {
     headers: myHeaders,
     body: raw,
   };
-  fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=YOUR_API_KEY", requestOptions)
+  fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyC5fPJWunZDHiByXIJCJj3BNSFcu7qyFkA", requestOptions)
     .then((response) => response.json())
     .then((result) => {
       
       console.log(result.candidates[0].content.parts[0].text);
-      chatBubble=`<h3 class="text-start bg-secondary text-white">${result.candidates[0].content.parts[0].text}</h3>`;
+      chatBubble=`<h3 class="text-start bg-secondary text-white">${md.render(result.candidates[0].content.parts[0].text)}</h3>`;
       chatList.push(chatBubble);
       loadChatBox();
     })
     .catch((error) => console.error(error));
-  // --------------------------------------------------------------
-  loadChatBox();
+
+    loadChatBox();
 }
 function loadChatBox() {
   document.getElementById("chatBox").innerHTML = "";
@@ -58,5 +60,4 @@ function loadChatBox() {
   })
 }
 
-// ----------------------------------------------------------------------
 
